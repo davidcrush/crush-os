@@ -11,6 +11,26 @@ start:
     movw $0x7C00, %sp
     movb %dl, boot_drive
 
+    movb boot_drive, %dl
+    movw $dap, %si                # DS:SI -> DAP
+    movb $0x42, %ah
+    int  $0x13
+    jc   disk_error               # CF=1 => failed
+
+ok:
+    # mark success: 'K'
+    movw $0xB800, %ax
+    movw %ax, %es
+    movw $0x0F4B, %ax             # 'K' white-on-black
+    movw %ax, %es:0
+    jmp  hang
+
+disk_error:
+    # mark failure: 'E'
+    movw $0xB800, %ax
+    movw %ax, %es
+    movw $0x0F45, %ax             # 'E' white-on-black
+    movw %ax, %es:0
 
 hang:
     hlt
@@ -18,9 +38,6 @@ hang:
 
 boot_drive:
     .byte 0
-
-    .fill 510-(.-start), 1, 0
-    .byte 0x55, 0xAA
 
 # Disk Address Packet (16 bytes)
 dap:
