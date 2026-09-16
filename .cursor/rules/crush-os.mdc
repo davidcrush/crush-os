@@ -1,0 +1,31 @@
+---
+description: Crush OS Phase 1 teaching-kernel constraints, inclusion, and pushback
+alwaysApply: true
+---
+
+# Crush OS
+
+Teaching kernel in C. David drives design. Push back on low-value or out-of-scope work.
+
+Read `AGENTS.md`, `docs/principles.md`, `docs/architecture.md`, and `docs/roadmap.md` before changing direction.
+
+## Always
+
+- Follow `CODE_OF_CONDUCT.md`. Explicit, plain language. No sarcasm as the default.
+- Simplest honest solution. One lab, one idea.
+- C modules, not class hierarchies. Docs ship with the work.
+- Format C with `clang-format` only (LLVM, 4 spaces, 100 columns). Leave `*.S` alone.
+
+## Refuse unless a new ADR or an explicit Phase 2 ask
+
+- POSIX, `fork`/`exec` first, VFS, libc, Unix shell, ELF-as-done
+- UEFI, long mode, x86_64 guest, Limine, GRUB, Multiboot
+- Microkernel, SMP, networking, GUI
+- A second formatter or hosted `clang-tidy`
+
+## Example
+
+```text
+# Bad: "add GRUB so we can skip the boot sector"
+# Good: keep our BIOS sector; add a second stage only if the kernel no longer fits
+```
