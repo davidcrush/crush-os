@@ -11,3 +11,4 @@ Short architecture decision records. If you want to reverse one, write a new ADR
 | [0005](0005-32-bit-protected-mode.md) | 32-bit protected mode |
 | [0006](0006-monolithic-kernel.md) | Monolithic kernel |
 | [0007](0007-c17-and-style.md) | C17 and clang-format |
+| [0008](0008-flat-kernel-at-64kib.md) | Flat kernel at 64 KiB |

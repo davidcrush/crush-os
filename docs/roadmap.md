@@ -16,11 +16,13 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 - Fedora setup is written ([dev-environment.md](dev-environment.md)).
 - Formatting config exists and is the only style tool.
 
-**Status:** this planning pass.
+**Status:** docs and formatting are in the repo. Implementation is not part of lab 0.
 
 ## Lab 1 — Boot
 
 **Idea:** The CPU starts in real mode. We load our kernel, enter 32-bit protected mode, and run C.
+
+**Design:** [labs/01-boot.md](labs/01-boot.md) (three checkpoints; you write the code).
 
 **Done when:**
 
@@ -28,9 +30,11 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 - The kernel is loaded from disk (second stage only if size forces it).
 - `kmain` runs and we can prove it (VGA text is enough).
 - A documented QEMU run recipe exists (a Makefile target later).
-- A short lab page exists under `docs/`.
+- The lab page exists under `docs/` (this is the page above).
 
 **Not done if:** we used Limine, GRUB, UEFI, or long mode to skip the lesson.
+
+**Status:** design written. Code not started.
 
 ## Lab 2 — Console
 
