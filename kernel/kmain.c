@@ -1,8 +1,14 @@
-#include "console.h"
 #include "serial.h"
+#include "printk.h"
 
 void kmain(void) {
     serial_init();
-    console_write("Hello, World! My name is David.\nWhoop Whoop!\nWelcome to my kernel!");
+    printk("Hello, World! My name is David.\nWhoop Whoop!\nWelcome to my kernel!");
+    printk("\nThe number 1234567890 in decimal is %d\n", 1234567890);
+    printk("\nThe number 1234567890 in hexadecimal is %x\n", 1234567890);
+    printk("\nThe number -1234567890 in decimal is %d\n", -1234567890);
+    printk("\nThe number -1234567890 in hexadecimal is %x\n", -1234567890);
+    printk("\nThe string \"Hello, World!\" is %s\n", "Hello, World!");
+    panic("This is a test panic, I'm a nervous rex.");
     for (;;) { __asm__ __volatile__("hlt"); }
 }

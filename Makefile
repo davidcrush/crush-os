@@ -21,13 +21,16 @@ boot.o: boot/boot.S
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary -j .text -j .rodata $< $@
 
-kernel.elf: entry.o kmain.o console.o serial.o io.o
-	$(LD) -Ttext 0x10000 -e start -o $@ entry.o kmain.o console.o serial.o io.o
+kernel.elf: entry.o kmain.o console.o serial.o io.o printk.o
+	$(LD) -Ttext 0x10000 -e start -o $@ entry.o kmain.o console.o serial.o io.o printk.o
 
 entry.o: kernel/entry.S
 	$(AS) -o $@ $<
 
-kmain.o: kernel/kmain.c kernel/console.h kernel/serial.h
+kmain.o: kernel/kmain.c kernel/serial.h kernel/printk.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+printk.o: kernel/printk.c kernel/printk.h kernel/console.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 console.o: kernel/console.c kernel/console.h kernel/serial.h
@@ -51,4 +54,4 @@ check: boot.bin
 	xxd boot.bin | tail -n 1
 
 clean:
-	rm -f boot.o boot.elf boot.bin entry.o kmain.o console.o serial.o io.o kernel.elf kernel.bin disk.img
+	rm -f boot.o boot.elf boot.bin entry.o kmain.o console.o serial.o io.o printk.o kernel.elf kernel.bin disk.img
