@@ -34,11 +34,13 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 
 **Not done if:** we used Limine, GRUB, UEFI, or long mode to skip the lesson.
 
-**Status:** design written. Code not started.
+**Status:** design written. Boot path and `kmain` VGA proof exist.
 
 ## Lab 2 — Console
 
 **Idea:** The kernel can talk.
+
+**Design:** [labs/02-console.md](labs/02-console.md) (three checkpoints; you write the code).
 
 **Done when:**
 
@@ -48,6 +50,8 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 - Lab page exists.
 
 **Not done if:** we built a framebuffer console or a GUI.
+
+**Status:** design written. Code not started.
 
 ## Lab 3 — Interrupts
 
