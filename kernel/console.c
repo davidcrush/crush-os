@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "console.h"
+#include "serial.h"
 
 static uint8_t cursor_row = 0;
 static uint8_t cursor_col = 0;
@@ -31,6 +32,8 @@ static void console_scroll() {
 }
 
 void console_putc(char c) {
+    serial_putc(c);
+
     switch (c) {
         case '\n':
             cursor_col = 0;

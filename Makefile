@@ -21,16 +21,22 @@ boot.o: boot/boot.S
 kernel.bin: kernel.elf
 	$(OBJCOPY) -O binary -j .text -j .rodata $< $@
 
-kernel.elf: entry.o kmain.o console.o
-	$(LD) -Ttext 0x10000 -e start -o $@ entry.o kmain.o console.o
+kernel.elf: entry.o kmain.o console.o serial.o io.o
+	$(LD) -Ttext 0x10000 -e start -o $@ entry.o kmain.o console.o serial.o io.o
 
 entry.o: kernel/entry.S
 	$(AS) -o $@ $<
 
-kmain.o: kernel/kmain.c kernel/console.h
+kmain.o: kernel/kmain.c kernel/console.h kernel/serial.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-console.o: kernel/console.c kernel/console.h
+console.o: kernel/console.c kernel/console.h kernel/serial.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+serial.o: kernel/serial.c kernel/serial.h kernel/io.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+io.o: kernel/io.c kernel/io.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 disk.img: boot.bin kernel.bin
@@ -39,10 +45,10 @@ disk.img: boot.bin kernel.bin
 	dd if=kernel.bin of=$@ bs=512 seek=1 conv=notrunc status=none
 
 run: disk.img
-	qemu-system-i386 -drive format=raw,file=disk.img
+	qemu-system-i386 -drive format=raw,file=disk.img -serial stdio
 
 check: boot.bin
 	xxd boot.bin | tail -n 1
 
 clean:
-	rm -f boot.o boot.elf boot.bin entry.o kmain.o console.o kernel.elf kernel.bin disk.img
+	rm -f boot.o boot.elf boot.bin entry.o kmain.o console.o serial.o io.o kernel.elf kernel.bin disk.img
