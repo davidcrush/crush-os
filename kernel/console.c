@@ -29,6 +29,7 @@ static void console_scroll() {
         vga[24 * 80 + x] = 0x0F20; /* space, same attribute */
     }
 }
+
 void console_putc(char c) {
     switch (c) {
         case '\n':
