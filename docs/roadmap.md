@@ -51,11 +51,13 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 
 **Not done if:** we built a framebuffer console or a GUI.
 
-**Status:** design written. Code not started.
+**Status:** design written. VGA, serial, `printk`, and `panic` exist.
 
 ## Lab 3 — Interrupts
 
 **Idea:** Hardware can interrupt us, and we resume.
+
+**Design:** [labs/03-interrupts.md](labs/03-interrupts.md) (three checkpoints; you write the code).
 
 **Done when:**
 
@@ -65,6 +67,8 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 - Lab page exists.
 
 **Not done if:** we jumped to APIC/IOAPIC or SMP.
+
+**Status:** design written. Code not started.
 
 ## Lab 4 — Memory
 

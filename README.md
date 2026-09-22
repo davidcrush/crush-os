@@ -10,7 +10,7 @@ David Crush is the sole developer. AI agents help write code; David drives desig
 
 **Phase 2** (later, separate design) is a Unix-like OS. Phase 1 is not a baby Unix. We graduate when the labs have done their job.
 
-Lab 1 is specified and the boot path runs `kmain`. Lab 2 is specified; David writes the console. Design: [docs/labs/01-boot.md](docs/labs/01-boot.md), [docs/labs/02-console.md](docs/labs/02-console.md).
+Lab 1 boots to `kmain`. Lab 2 has a console. Lab 3 is specified; David writes interrupts. Design: [docs/labs/01-boot.md](docs/labs/01-boot.md), [docs/labs/02-console.md](docs/labs/02-console.md), [docs/labs/03-interrupts.md](docs/labs/03-interrupts.md).
 
 ## Read in this order
 
@@ -23,6 +23,7 @@ Lab 1 is specified and the boot path runs `kmain`. Lab 2 is specified; David wri
 7. [docs/dev-environment.md](docs/dev-environment.md) — Fedora toolchain and format-on-save
 8. [docs/labs/01-boot.md](docs/labs/01-boot.md) — Lab 1 contract (you write the code)
 9. [docs/labs/02-console.md](docs/labs/02-console.md) — Lab 2 contract (you write the code)
+10. [docs/labs/03-interrupts.md](docs/labs/03-interrupts.md) — Lab 3 contract (you write the code)
 
 Agents start at [AGENTS.md](AGENTS.md).
 
