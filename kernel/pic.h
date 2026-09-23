@@ -2,9 +2,11 @@
 #define PIC_H
 
 #include <stdint.h>
-#include "io.h"
+
+#define PIC_VECTOR_TIMER 0x20
+#define PIC_VECTOR_KBD 0x21
 
 void pic_init(void);
-void pic_send_eoi(unsigned char irq);
+void pic_send_eoi(uint8_t irq);
 
 #endif

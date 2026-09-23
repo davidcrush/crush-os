@@ -1,18 +1,21 @@
-#include <stdint.h>
 #include "idt.h"
+
+#include "kbd.h"
+#include "pic.h"
 #include "printk.h"
 #include "timer.h"
-#include "kbd.h"
+
+#include <stdint.h>
 
 #define IDT_COUNT 256
 #define KERNEL_CS 0x08
-#define IDT_TYPE_INTERRUPT_GATE 0x8E  // present=1, DPL=0, 32-bit interrupt gate
+#define IDT_TYPE_INTERRUPT_GATE 0x8E /* present, DPL 0, 32-bit interrupt gate */
 
 struct idt_entry {
     uint16_t offset_low;
     uint16_t selector;
-    uint8_t  zero;
-    uint8_t  type_attr;
+    uint8_t zero;
+    uint8_t type_attr;
     uint16_t offset_high;
 } __attribute__((packed));
 
@@ -23,18 +26,20 @@ struct idtr {
     uint32_t base;
 } __attribute__((packed));
 
-// from isr_stubs.S
-extern void* isr_stub_table[IDT_COUNT];
+/* from isr_stubs.S */
+extern void *isr_stub_table[IDT_COUNT];
 
-static inline void lidt(const struct idtr* p) {
-    __asm__ volatile ("lidt (%0)" : : "r"(p));
+static inline void lidt(const struct idtr *p)
+{
+    __asm__ volatile("lidt (%0)" : : "r"(p));
 }
 
-static void idt_set_gate(uint8_t vec, uint32_t handler_addr) {
-    idt[vec].offset_low  = (uint16_t)(handler_addr & 0xFFFF);
-    idt[vec].selector    = KERNEL_CS;
-    idt[vec].zero        = 0;
-    idt[vec].type_attr   = IDT_TYPE_INTERRUPT_GATE;
+static void idt_set_gate(uint8_t vec, uint32_t handler_addr)
+{
+    idt[vec].offset_low = (uint16_t)(handler_addr & 0xFFFF);
+    idt[vec].selector = KERNEL_CS;
+    idt[vec].zero = 0;
+    idt[vec].type_attr = IDT_TYPE_INTERRUPT_GATE;
     idt[vec].offset_high = (uint16_t)((handler_addr >> 16) & 0xFFFF);
 }
 
@@ -45,35 +50,33 @@ struct isr_frame {
     uint32_t eip, cs, eflags;
 };
 
-void isr_dispatch_c(struct isr_frame *frame) {
+void isr_dispatch_c(struct isr_frame *frame)
+{
     switch (frame->vector) {
-        // Timer
-        case 32:
-            timer_on_tick();
-            return;
-        // Keyboard
-        case 33:
-            kbd_on_keypress();
-            return;
-        default:
-            break;
+    case PIC_VECTOR_TIMER:
+        timer_on_tick();
+        return;
+    case PIC_VECTOR_KBD:
+        kbd_on_keypress();
+        return;
+    default:
+        break;
     }
 
-    // Exception
     printk("exception %u\n", frame->vector);
     panic("exception");
 }
 
-void idt_init(void) {
-    // Fill all entries so no slot is empty (empty can triple-fault)
+void idt_init(void)
+{
+    /* An empty slot triple-faults, so every vector gets a stub. */
     for (uint16_t i = 0; i < IDT_COUNT; i++) {
         idt_set_gate((uint8_t)i, (uint32_t)isr_stub_table[i]);
     }
 
     struct idtr idtr_value;
-    idtr_value.limit = (uint16_t)(sizeof(idt) - 1);   // 256*8 - 1
-    idtr_value.base  = (uint32_t)&idt[0];
+    idtr_value.limit = (uint16_t)(sizeof(idt) - 1);
+    idtr_value.base = (uint32_t)&idt[0];
 
-    // keep interrupts disabled (cli) in checkpoint 1; just load the table
     lidt(&idtr_value);
 }

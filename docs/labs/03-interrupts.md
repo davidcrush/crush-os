@@ -2,7 +2,7 @@
 
 **Idea:** Hardware can interrupt us, and we resume.
 
-You write the code. This page is the contract: IDT layout, PIC remap, PIT and keyboard ports, and when to `panic`. It is **not** a paste-ready `isr.S`. If you get stuck, we talk. It does not need to be perfect.
+You write the code. This page is the contract: IDT layout, PIC remap, PIT and keyboard ports, and when to `panic`. It is **not** a paste-ready `kernel/isr_stubs.S`. If you get stuck, we talk. It does not need to be perfect.
 
 Primer: [os-primer.md](../os-primer.md). Architecture: [architecture.md](../architecture.md). Toolchain: [dev-environment.md](../dev-environment.md). Boot: [01-boot.md](01-boot.md). Console: [02-console.md](02-console.md).
 
@@ -29,7 +29,7 @@ Do not create empty directories “for later.” Add these when you start a chec
 | File | Role |
 | --- | --- |
 | `kernel/idt.h`, `kernel/idt.c` | 256-entry IDT, gate builder, `lidt`. |
-| `kernel/isr.S` | `.code32` stubs. Save state, call C, `iret`. C does not `iret`. |
+| `kernel/isr_stubs.S` | `.code32` stubs. Save state, call C, `iret`. C does not `iret`. |
 | `kernel/pic.h`, `kernel/pic.c` | Remap the 8259s, mask, EOI. Uses `io.h`. |
 | `kernel/timer.c` | PIT init and the IRQ0 C handler. |
 | `kernel/kbd.c` | IRQ1 C handler. Read `0x60`. |
@@ -44,7 +44,7 @@ CPU exception / PIC IRQ
         |
       IDT gate  (32-bit interrupt gate, selector 0x08)
         |
-   stub in isr.S   (vector, saved regs, call C, iret)
+   stub in isr_stubs.S   (vector, saved regs, call C, iret)
         |
    C handler
         |
@@ -150,10 +150,10 @@ There is no syscall and no ring 3. The key only proves the IRQ path.
 
 ## Build notes
 
-Assemble `isr.S` with `as --32` and link it with the other kernel objects. **`entry.o` stays first** on the `ld` line so the far jump still lands on `kernel/entry.S`. `-Ttext 0x10000` does not change.
+Assemble `kernel/isr_stubs.S` with `as --32` and link it with the other kernel objects. **`entry.o` stays first** on the `ld` line so the far jump still lands on `kernel/entry.S`. `-Ttext 0x10000` does not change.
 
 ```text
-ld ... -e start -o kernel.elf entry.o ... isr.o idt.o pic.o timer.o kbd.o ...
+ld ... -e start -o kernel.elf entry.o ... isr_stubs.o idt.o pic.o timer.o kbd.o ...
 ```
 
 `objcopy` still needs `-j .text -j .rodata` (and `-j .data` if you have it). The IDT array is zeros in `.bss` unless you initialize it; `.bss` is not in the flat file, which is fine if you fill the gates at runtime.

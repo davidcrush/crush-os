@@ -1,5 +1,5 @@
-#ifndef _PRINTK_H
-#define _PRINTK_H
+#ifndef PRINTK_H
+#define PRINTK_H
 
 #include <stdarg.h>
 

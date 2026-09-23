@@ -68,7 +68,7 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 
 **Not done if:** we jumped to APIC/IOAPIC or SMP.
 
-**Status:** design written. Code not started.
+**Status:** done. IDT, PIC, timer, and keyboard are in the kernel.
 
 ## Lab 4 — Memory
 
