@@ -74,6 +74,8 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 
 **Idea:** We own RAM, then we invent addresses.
 
+**Design:** [labs/04-memory.md](labs/04-memory.md) (three checkpoints; you write the code).
+
 **Done when:**
 
 - A physical allocator (bitmap or freelist) hands out frames.
@@ -82,6 +84,8 @@ Principles: [principles.md](principles.md). Design: [architecture.md](architectu
 - Lab page exists.
 
 **Not done if:** we built a slab/buddy forest or 4-level long-mode paging.
+
+**Status:** design written. Code not started.
 
 ## Lab 5 — Concurrency
 

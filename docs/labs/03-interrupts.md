@@ -175,4 +175,4 @@ APIC, IOAPIC, SMP, MSI, syscall/sysenter, ring 3, a keyboard line editor, UART I
 - **No key in the log:** IRQ1 is still masked, you did not read `0x60`, or the QEMU window does not have focus.
 - **`printk` from the handler never appears:** serial or VGA path regressed. Handlers must go through `printk`, and `serial_init` must already have run.
 
-When you can walk checkpoint 3 out loud, lab 3 is done. Lab 4 is memory.
+When you can walk checkpoint 3 out loud, lab 3 is done. Lab 4 is [memory](04-memory.md).
