@@ -1,7 +1,6 @@
 .code32
 .global start
 .extern kmain
-
 start:
     movw $0x10, %ax
     movw %ax, %ds
