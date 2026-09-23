@@ -4,12 +4,6 @@
 #include "pic.h"
 #include "timer.h"
 
-// static void force_exception(void) {
-//     volatile int zero = 0;
-//     volatile int x = 1 / zero;
-//     (void)x;
-// }
-
 static void init(void) {
     serial_init();
     idt_init();
@@ -17,8 +11,13 @@ static void init(void) {
     timer_init();
 }
 
+static inline void sti(void) {
+    __asm__ volatile ("sti");
+}
+
 void kmain(void) {
     init();
+    sti();
     printk("Hello, World! My name is David.\nWhoop Whoop!\nWelcome to my kernel!");
     printk("\nThe number 1234567890 in decimal is %d\n", 1234567890);
     printk("\nThe number 1234567890 in hexadecimal is %x\n", 1234567890);

@@ -62,6 +62,7 @@ ISR_NOERR 28
 ISR_NOERR 29
 ISR_NOERR 30
 ISR_NOERR 31
+ISR_NOERR 32
 
 /* Default stub for vectors you haven't specialized yet */
 .global isr_stub_default
@@ -81,6 +82,7 @@ isr_stub_table:
     .long isr_stub_20, isr_stub_21, isr_stub_22, isr_stub_23
     .long isr_stub_24, isr_stub_25, isr_stub_26, isr_stub_27
     .long isr_stub_28, isr_stub_29, isr_stub_30, isr_stub_31
-    .rept 224
-      .long isr_stub_default
+    .long isr_stub_32
+    .rept 223
+        .long isr_stub_default
     .endr

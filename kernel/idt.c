@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "idt.h"
 #include "printk.h"
+#include "timer.h"
 
 #define IDT_COUNT 256
 #define KERNEL_CS 0x08
@@ -44,6 +45,13 @@ struct isr_frame {
 };
 
 void isr_dispatch_c(struct isr_frame *frame) {
+    // Timer
+    if (frame->vector == 32) {
+        timer_on_tick();
+        return;
+    }
+
+    // Exception
     printk("exception %u\n", frame->vector);
     panic("exception");
 }

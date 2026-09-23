@@ -42,7 +42,7 @@ serial.o: kernel/serial.c kernel/serial.h kernel/io.h
 io.o: kernel/io.c kernel/io.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-idt.o: kernel/idt.c kernel/idt.h kernel/printk.h
+idt.o: kernel/idt.c kernel/idt.h kernel/printk.h kernel/timer.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 pic.o: kernel/pic.c kernel/pic.h kernel/io.h
