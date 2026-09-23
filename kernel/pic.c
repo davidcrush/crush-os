@@ -28,7 +28,7 @@ static void pic_remap(void) {
     outb(PIC2_DATA, 0x01); io_wait();
 
     // Checkpoint 2: unmask only IRQ0 (timer), mask everything else
-    outb(PIC1_DATA, 0xFE);  // 11111110b
+    outb(PIC1_DATA, 0xFC);  // 11111100b
     outb(PIC2_DATA, 0xFF);  // all masked on slave
 
     // (optional: restore m1/m2 later when enabling more IRQs)

@@ -3,12 +3,14 @@
 #include "idt.h"
 #include "pic.h"
 #include "timer.h"
+#include "kbd.h"
 
 static void init(void) {
     serial_init();
     idt_init();
     pic_init();
     timer_init();
+    kbd_init();
 }
 
 static inline void sti(void) {
